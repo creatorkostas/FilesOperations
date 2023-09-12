@@ -23,19 +23,22 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
         private List<String> NamesList = new ArrayList<>();
         private String directoryName;
         private int MaxDepth = 10;
-    
+        private String pathSeperator = "\\";
+
         public FindMultipleFiles(String directory) {
+                if(System.getProperty("os.name") == "Linux") pathSeperator = "/";
                 this.directoryName = directory;
         }
 
         public FindMultipleFiles(String directory, List<String> exts) {
-                this.directoryName = directory;
+                this(directory);
                 this.extList = exts;
         }
 
         public FindMultipleFiles(String directory, List<String> exts, int MaxDepth) {
-                this.directoryName = directory;
-                this.extList = exts;
+                // this.directoryName = directory;
+                // this.extList = exts;
+                this(directory, exts);
                 this.MaxDepth = MaxDepth;
         }
 
@@ -108,7 +111,7 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
                 for (String path : pathsList) {
                         String[] final_path = new String[50];
                         String final_name;
-                        final_path = path.split(Pattern.quote("\\"));
+                        final_path = path.split(Pattern.quote(pathSeperator));
                         final_name = final_path[final_path.length - 1];
                         final_name = final_name.substring(0, final_name.length() - 4);
                         NamesList.add(final_name);
@@ -123,7 +126,7 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
                 return FindFiles();
         }
 
-        public static String GetName(String pathName) {
+        public String GetName(String pathName) {
 
                 String[] final_path = new String[50];
                 String final_name;
@@ -132,19 +135,19 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
                         pathName = "";
                 }
                 
-                final_path = pathName.split(Pattern.quote("\\"));
+                final_path = pathName.split(Pattern.quote(pathSeperator));
                 final_name = final_path[final_path.length - 1];
                 final_name = final_name.substring(0, final_name.length() - 4);
 
                 return final_name;
         }
         
-        public static String GetExt(String pathName) {
+        public String GetExt(String pathName) {
 
                 String[] final_path = new String[50];
                 String[] ext = new String[50];
                 String final_name;
-                final_path = pathName.split(Pattern.quote("\\"));
+                final_path = pathName.split(Pattern.quote(pathSeperator));
                 final_name = final_path[final_path.length - 1];
                 ext = final_name.split(Pattern.quote("."));
                 final_name = ext[ext.length - 1];
