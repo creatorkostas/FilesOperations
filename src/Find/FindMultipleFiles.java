@@ -25,14 +25,27 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
         private int MaxDepth = 10;
         private String pathSeperator = "\\";
 
+        public void setPathSeperator(String pathSeperator) {
+                this.pathSeperator = pathSeperator;
+        }
+
+        public String getPathSeperator() {
+                return pathSeperator;
+        }
+
         public FindMultipleFiles(String directory) {
-                if(System.getProperty("os.name") == "Linux") pathSeperator = "/";
+                if(System.getProperty("os.name").equals("Linux")) pathSeperator = "/";
                 this.directoryName = directory;
         }
 
         public FindMultipleFiles(String directory, List<String> exts) {
                 this(directory);
                 this.extList = exts;
+        }
+
+        public FindMultipleFiles(String directory, int MaxDepth) {
+                this(directory);
+                this.MaxDepth = MaxDepth;
         }
 
         public FindMultipleFiles(String directory, List<String> exts, int MaxDepth) {
@@ -111,7 +124,7 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
                 for (String path : pathsList) {
                         String[] final_path = new String[50];
                         String final_name;
-                        final_path = path.split(Pattern.quote(pathSeperator));
+                        final_path = path.split(Pattern.quote("/"));
                         final_name = final_path[final_path.length - 1];
                         final_name = final_name.substring(0, final_name.length() - 4);
                         NamesList.add(final_name);
@@ -123,7 +136,7 @@ public class FindMultipleFiles implements FindMultipleFilesInterface {
         @Override
         public List<String> GetNames(List<String> pathsList) throws IOException {
                 this.pathsList = pathsList;
-                return FindFiles();
+                return GetNames();
         }
 
         public String GetName(String pathName) {
